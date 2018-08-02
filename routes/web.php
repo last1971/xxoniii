@@ -14,4 +14,7 @@
 Route::get('/', function () {
     return view('main');
 });
+Route::get('test', function () {
+    return view('welcome');
+});
 Route::resource('kino-event','KinoEventController');
