@@ -17,62 +17,62 @@
     </div>
     <div class="card-body">
         <div class="form-group row">
-            <label for="name" class="col-md-4 col-form-label text-md-right">Название</label>
-            <input required name="name" type="text" class="col-md-4 form-control" v-model="value.article.name"
+            <label for="name" class="col-md-2 col-form-label text-md-right">Название</label>
+            <input required name="name" type="text" class="col-md-8 form-control" v-model="value.article.name"
                    v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors['article.name'] !== undefined }"/>
-            <span class="invalid-feedback col-md-4 text-md-right" v-if="errors.errors !== undefined && errors.errors['article.name'] !== undefined">
+            <span class="invalid-feedback col-md-2 text-md-right" v-if="errors.errors !== undefined && errors.errors['article.name'] !== undefined">
                 <strong>{{errors.errors['article.name'][0]}}</strong>
             </span>
         </div>
         <div class="form-group row">
-            <label for="short_text" class="col-md-4 col-form-label text-md-right">Описане</label>
-            <input required name="short_text" type="text" class="col-md-4 form-control" v-model="value.article.short_text"
+            <label for="short_text" class="col-md-2 col-form-label text-md-right">Описане</label>
+            <input required name="short_text" type="text" class="col-md-8 form-control" v-model="value.article.short_text"
                    v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors['article.short_text'] !== undefined }"/>
-            <span class="invalid-feedback col-md-4 text-md-right" v-if="errors.errors !== undefined && errors.errors['article.short_text'] !== undefined">
+            <span class="invalid-feedback col-md-2 text-md-right" v-if="errors.errors !== undefined && errors.errors['article.short_text'] !== undefined">
                 <strong>{{errors.errors['article.short_text'][0]}}</strong>
             </span>
         </div>
         <html-editor-component class="form-control" v-model="value.article.content"></html-editor-component>
         <div class="form-group row">
-            <label for="start" class="col-md-4 col-form-label text-md-right">Начало</label>
-            <date-picker-component  name="start"  class="col-md-4 form-control" v-model="start"
+            <label for="start" class="col-md-2 col-form-label text-md-right">Начало</label>
+            <date-picker-component  name="start"  class="col-md-8 form-control" v-model="start"
                               v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors.start !== undefined }"></date-picker-component>
-            <span class="invalid-feedback col-md-4 text-md-right" v-if="errors.errors !== undefined && errors.errors.start !== undefined"><strong>{{errors.errors.start[0]}}</strong></span>
+            <span class="invalid-feedback col-md-2 text-md-right" v-if="errors.errors !== undefined && errors.errors.start !== undefined"><strong>{{errors.errors.start[0]}}</strong></span>
         </div>
         <div class="form-group row">
-            <label for="end" class="col-md-4 col-form-label text-md-right" >Окончание</label>
-            <date-time-picker required name="end" type="text" class="col-md-4 form-control" v-model="end"
-                   v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors.end !== undefined }"></date-time-picker>
-            <span class="invalid-feedback col-md-4 text-md-right" v-if="errors.errors !== undefined && errors.errors.end !== undefined"><strong>{{errors.errors.end[0]}}</strong></span>
+            <label for="end" class="col-md-2 col-form-label text-md-right" >Окончание</label>
+            <date-picker-component name="end" class="col-md-8 form-control" v-model="end"
+                   v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors.end !== undefined }"></date-picker-component>
+            <span class="invalid-feedback col-md-2 text-md-right" v-if="errors.errors !== undefined && errors.errors.end !== undefined"><strong>{{errors.errors.end[0]}}</strong></span>
 
         </div>
         <div class="form-group row">
-            <label for="place" class="col-md-4 col-form-label text-md-right">Место</label>
-            <select required name="place" class="col-md-4 form-control" v-model="value.place"
+            <label for="place" class="col-md-2 col-form-label text-md-right">Место</label>
+            <select required name="place" class="col-md-8 form-control" v-model="value.place"
                     v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors['place.id'] !== undefined }">
                 <option v-for="place in places" :value="place">{{place.name}}</option>
             </select>
-            <span class="invalid-feedback col-md-4 text-md-right" v-if="errors.errors !== undefined && errors.errors['place.id'] !== undefined">
+            <span class="invalid-feedback col-md-2 text-md-right" v-if="errors.errors !== undefined && errors.errors['place.id'] !== undefined">
                 <strong>{{errors.errors['place.id'][0]}}</strong>
             </span>
         </div>
         <div class="form-group row">
-            <label for="lector" class="col-md-4 col-form-label text-md-right">Лектор</label>
-            <select required name="lector" class="col-md-4 form-control" v-model="value.lector"
+            <label for="lector" class="col-md-2 col-form-label text-md-right">Лектор</label>
+            <select required name="lector" class="col-md-8 form-control" v-model="value.lector"
                     v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors['lector.id'] !== undefined }">
                 <option v-for="lector in lectors" :value="lector">{{lector.name}}</option>
             </select>
-            <span class="invalid-feedback col-md-4 text-md-right" v-if="errors.errors !== undefined && errors.errors['lector.id'] !== undefined">
+            <span class="invalid-feedback col-md-2 text-md-right" v-if="errors.errors !== undefined && errors.errors['lector.id'] !== undefined">
                 <strong>{{errors.errors['lector.id'][0]}}</strong>
             </span>
         </div>
         <div class="form-group row">
-            <label for="web" class="col-md-4 col-form-label text-md-right">Сайт</label>
-            <input name="web" type="text" class="col-md-4 form-control" v-model="value.web" />
+            <label for="web" class="col-md-2 col-form-label text-md-right">Сайт</label>
+            <input name="web" type="text" class="col-md-8 form-control" v-model="value.web" />
         </div>
         <div class="form-group row">
-            <div class="col-md-4 btn alert-success" @click="save">Сохранить</div>
-            <div class="col-md-4 btn alert-danger" @click="cancel">Отменить</div>
+            <div class="col-md-6 btn alert-success" @click="save">Сохранить</div>
+            <div class="col-md-6 btn alert-danger" @click="cancel">Отменить</div>
         </div>
     </div>
     </div>
