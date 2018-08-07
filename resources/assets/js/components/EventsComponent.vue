@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row btn-light" v-if="editMode && kino_events[0].id!==0" @click="makeNewEvent">Новый ивент</div>
+        <div class="row btn-light" v-if="editMode && (kino_events.length == 0 || kino_events[0].id!==0)" @click="makeNewEvent">Новый ивент</div>
         <event-edit-component v-if="editMode" class="row border" v-model="kino_events[index]" @rescan="scan" ref="editor"></event-edit-component>
         <div class="row border" v-for="(kino_event,index) in kino_events" @click="expand(index)">
             <event-component  v-model="kino_events[index]"></event-component>
@@ -33,7 +33,8 @@
                     start:new Date().toISOString().slice(0, 19).replace('T', ' '),
                     end:new Date().toISOString().slice(0, 19).replace('T', ' '),
                     seat_count:0,
-                    seat_fre:0
+                    seat_free:0,
+                    expanded: false
                 },
             }
         },

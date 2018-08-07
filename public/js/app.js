@@ -49571,7 +49571,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -49654,7 +49654,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 start: new Date().toISOString().slice(0, 19).replace('T', ' '),
                 end: new Date().toISOString().slice(0, 19).replace('T', ' '),
                 seat_count: 0,
-                seat_fre: 0
+                seat_free: 0,
+                expanded: false
             }
         };
     },
@@ -73594,7 +73595,8 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
-      _vm.editMode && _vm.kino_events[0].id !== 0
+      _vm.editMode &&
+      (_vm.kino_events.length == 0 || _vm.kino_events[0].id !== 0)
         ? _c(
             "div",
             { staticClass: "row btn-light", on: { click: _vm.makeNewEvent } },
