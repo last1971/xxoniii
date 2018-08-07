@@ -24,6 +24,8 @@
         "quill-image-drop-module": "^1.0.3",
         "quill-image-resize-module": "^3.0.0",
         "simple-vue2-datetimepicker": "^0.4.0",
-        "vue2-editor": "^2.6.6"
+        "vue-calendar-picker": "^2.0.3",
+        "vue2-editor": "^2.6.6",
+        "vuejs-datepicker": "^1.5.2"
     }
 }

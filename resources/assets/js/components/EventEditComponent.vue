@@ -35,8 +35,8 @@
         <html-editor-component class="form-control" v-model="value.article.content"></html-editor-component>
         <div class="form-group row">
             <label for="start" class="col-md-4 col-form-label text-md-right">Начало</label>
-            <date-time-picker required name="start" type="text" class="col-md-4 form-control" v-model="start"
-                              v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors.start !== undefined }"></date-time-picker>
+            <date-picker :datetime="true"  :calendar-button="true" name="start" type="text" class="col-md-4 form-control" v-model="start"
+                              v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors.start !== undefined }"></date-picker>
             <span class="invalid-feedback col-md-4 text-md-right" v-if="errors.errors !== undefined && errors.errors.start !== undefined"><strong>{{errors.errors.start[0]}}</strong></span>
         </div>
         <div class="form-group row">
@@ -81,9 +81,10 @@
 <script>
     import HtmlEditorComponent from "./HtmlEditorComponent";
     import DateTimePicker from "simple-vue2-datetimepicker"
+    import DatePicker from "vuejs-datepicker"
     export default {
         name: "EventEditComponent",
-        components: {HtmlEditorComponent,DateTimePicker},
+        components: {HtmlEditorComponent,DateTimePicker,DatePicker},
         props: ['value'],
         data(){
             return {
