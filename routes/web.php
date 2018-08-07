@@ -18,3 +18,8 @@ Route::get('test', function () {
     return view('welcome');
 });
 Route::resource('kino-event','KinoEventController');
+Route::resource('place','PlaceController');
+Route::resource('lector','LectorController');
+
+Route::post('load-image','ImageController@upload');//загрузка картинки
+
