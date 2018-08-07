@@ -18,7 +18,8 @@ class KinoEventController extends Controller
     {
         //
         $query = KinoEvent::select('kino_events.*', DB::raw('false as expanded'))->with('article','lector','place');
-        return $query->get();
+        if ($request->last) $query = $query->where('start','<',$request->last);
+        return $query->orderBy('start','desc')->limit(3)->get();
     }
 
     /**
@@ -53,7 +54,7 @@ class KinoEventController extends Controller
         $kinoEvent->end = $request->end;
         $kinoEvent->web = $request->web;
         $kinoEvent->save();
-        return response()->json(['message'=>'ok']);
+        return response()->json(['message'=>'ok','id' => $kinoEvent->id,'article_id'=>$article->id]);
     }
 
     /**
@@ -65,6 +66,7 @@ class KinoEventController extends Controller
     public function show($id)
     {
         //
+        return KinoEvent::with(['article','lector','place'])->find($id);
     }
 
     /**
@@ -112,7 +114,7 @@ class KinoEventController extends Controller
         $kinoEvent->end = $request->end;
         $kinoEvent->web = $request->web;
         $kinoEvent->save();
-        return response()->json(['message'=>'ok']);
+        return response()->json(['message'=>'ok','id' => $kinoEvent->id,'article_id'=>$kinoEvent->article_id]);
     }
 
     /**

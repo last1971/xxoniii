@@ -35,8 +35,8 @@
         <html-editor-component class="form-control" v-model="value.article.content"></html-editor-component>
         <div class="form-group row">
             <label for="start" class="col-md-4 col-form-label text-md-right">Начало</label>
-            <date-picker :datetime="true"  :calendar-button="true" name="start" type="text" class="col-md-4 form-control" v-model="start"
-                              v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors.start !== undefined }"></date-picker>
+            <date-picker-component  name="start"  class="col-md-4 form-control" v-model="start"
+                              v-bind:class="{ 'is-invalid' : errors.errors !== undefined && errors.errors.start !== undefined }"></date-picker-component>
             <span class="invalid-feedback col-md-4 text-md-right" v-if="errors.errors !== undefined && errors.errors.start !== undefined"><strong>{{errors.errors.start[0]}}</strong></span>
         </div>
         <div class="form-group row">
@@ -81,10 +81,10 @@
 <script>
     import HtmlEditorComponent from "./HtmlEditorComponent";
     import DateTimePicker from "simple-vue2-datetimepicker"
-    import DatePicker from "vuejs-datepicker"
+    import DatePickerComponent from "./DatePickerComponent";
     export default {
         name: "EventEditComponent",
-        components: {HtmlEditorComponent,DateTimePicker,DatePicker},
+        components: {DatePickerComponent, HtmlEditorComponent, DateTimePicker},
         props: ['value'],
         data(){
             return {
@@ -108,7 +108,7 @@
                     return new Date(this.value.start)
                 },
                 set(value) {
-                    this.value.end = value.toISOString().slice(0, 19).replace('T', ' ');
+                    this.value.start = value.toISOString().slice(0, 19).replace('T', ' ');
                 }
             }
 
@@ -145,7 +145,8 @@
                 axios.put('kino-event/'+this.value.id,this.value)
                     .then(response => {
                         this.success = true;
-                        this.$emit('rescan');
+                        this.value.id = response.data.id;
+                        this.value.article_id = response.data.article_id;
                     }).catch(error => {
                         this.success = false;
                         this.errors =  error.response.data;

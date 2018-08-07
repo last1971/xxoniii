@@ -1,6 +1,6 @@
 <template>
     <vue-editor
-            v-model="val"
+            v-model="val_comp"
             :editorOptions="editorSettings"
             :customModules="customModulesForEditor"
             useCustomImageHandler
@@ -20,24 +20,21 @@
         components: {
             VueEditor
         },
-        watch: {
-            value: function(newVal, oldVal) { // watch it
-                if (this.aga) {
-                    this.val = newVal;
-                    this.aga = false;
-                } else {
-                    this.aga = true;
+        computed: {
+            val_comp: {
+                get(){
+                    return this.value
+                },
+                set(value){
+                    this.$emit('input',value)
                 }
             },
-            val: function() {
-                this.aga = false;
-                this.$emit('input',this.val);
-            }
+            editor() {
+                return this.$refs.myTextEditor.quill
+            },
         },
         data() {
             return {
-                aga:true,
-                val:this.value,
                 customModulesForEditor: [
                     { alias: 'imageDrop', module: ImageDrop },
                     { alias: 'imageResize', module: ImageResize }
@@ -70,11 +67,6 @@
                     theme: 'snow'
                 }
             }
-        },
-        computed: {
-            editor() {
-                return this.$refs.myTextEditor.quill
-            },
         },
         methods: {
             handleImageAdded: function(file, Editor, cursorLocation, resetUploader) {
