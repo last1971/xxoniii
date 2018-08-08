@@ -97,18 +97,18 @@
         computed:{
             end : {
                 get() {
-                    return new Date(this.value.end)
+                    return this.make_date(this.value.end)
                 },
                 set(value) {
-                    this.value.end = value.toISOString().slice(0, 19).replace('T', ' ');
+                    this.value.end = this.unmake_date(value)
                 }
             },
             start : {
                 get() {
-                    return new Date(this.value.start)
+                    return this.make_date(this.value.start)
                 },
                 set(value) {
-                    this.value.start = value.toISOString().slice(0, 19).replace('T', ' ');
+                    this.value.start = this.unmake_date(value)
                 }
             }
 
@@ -136,6 +136,26 @@
             }
         },
         methods:{
+            make_date(value){
+                let year = value.substr(0,4)
+                let month = parseInt(value.substr(5,2)) - 1
+                let day = value.substr(8,2)
+                let hour = value.substr(11,2)
+                let minute = value.substr(14,2)
+                return new Date(year,month,day,hour,minute)
+            },
+            unmake_date(value) {
+                let year = value.getFullYear();
+                let month = (parseInt(value.getMonth()) + 1).toString()
+                month = month.length == 1 ? '0' + month : month
+                let day = parseInt(value.getDate()).toString()
+                day = day.length == 1 ? '0' + day : day
+                let hour = parseInt(value.getHours()).toString()
+                hour = hour.length == 1 ? '0' + hour : hour
+                let minute = parseInt(value.getMinutes()).toString()
+                minute = minute.length == 1 ? '0' + minute : minute
+                return year + '-' + month + '-' + day + ' ' + hour + ':' + minute
+            },
             clearErrors () {
                 this.errors = [];
                 this.success = false;

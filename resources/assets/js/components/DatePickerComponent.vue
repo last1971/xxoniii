@@ -1,18 +1,18 @@
 <template>
     <div>
-        <select v-model="day">
-            <option v-for="month_day in days">{{month_day}}</option>
+        <select v-model="day" nsme="day_select">
+            <option v-for="month_day in days" v-bind:value="month_day">{{month_day}}</option>
         </select>
         <select v-model="month">
-            <option v-for="(month_,index) in monthes" :value="index">{{month_}}</option>
+            <option v-for="(month_,index1) in monthes" v-bind:value="index1">{{month_}}</option>
         </select>
         <input v-model="year">
         <select v-model="hour">
-            <option v-for="hour_ in 23" :value="hour_">{{hour_}}</option>
+            <option v-for="(hour_,index2) in 24" v-bind:value="index2">{{index2}}</option>
         </select>
         <span> : </span>
         <select v-model="minute">
-            <option v-for="minute_ in 59">{{minute_}}</option>
+            <option v-for="(minute_,index3) in 60" v-bind:value="index3">{{index3}}</option>
         </select>
     </div>
 </template>
@@ -46,7 +46,7 @@
                     return this.value.getHours()
                 },
                 set(value) {
-                    this.value.setHours(value)
+                    this.value.setHours(parseInt(value))
                     this.$emit('input', this.value)
                 }
             },
@@ -55,7 +55,7 @@
                     return this.value.getMinutes()
                 },
                 set(value) {
-                    this.value.setMinutes(value)
+                    this.value.setMinutes(parseInt(value))
                     this.$emit('input', this.value)
                 }
             },
@@ -64,7 +64,7 @@
                     return this.value.getDate()
                 },
                 set(value) {
-                    this.value.setDate(value)
+                    this.value.setDate(parseInt(value))
                     this.$emit('input', this.value)
                 }
             },
@@ -73,7 +73,7 @@
                     return this.value.getMonth()
                 },
                 set(value) {
-                    this.value.setMonth(value)
+                    this.value.setMonth(parseInt(value))
                     this.$emit('input', this.value)
                 }
             },
@@ -83,7 +83,7 @@
                 },
                 set(value) {
                     if (value>1900) {
-                        this.value.setFullYear(value)
+                        this.value.setFullYear(parseInt(value))
                         this.$emit('input', this.value)
                     }
                 }
@@ -91,7 +91,7 @@
             days: {
                 get() {
                     let days = this.days_[this.month]
-                    if (this.year % 4 == 0) days++
+                    if (parseInt(this.year) % 4 == 0) days++
                     return days
                 }
             }

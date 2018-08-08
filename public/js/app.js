@@ -49827,7 +49827,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -49878,6 +49878,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 second: 'numeric'
             }
         };
+    },
+
+    methods: {
+        make_date: function make_date(value) {
+            var year = value.substr(0, 4);
+            var month = parseInt(value.substr(5, 2)) - 1;
+            var day = value.substr(8, 2);
+            var hour = value.substr(11, 2);
+            var minute = value.substr(14, 2);
+            return new Date(year, month, day, hour, minute);
+        }
     }
 });
 
@@ -49917,7 +49928,9 @@ var render = function() {
         _vm._v(
           "Начало: " +
             _vm._s(
-              new Date(_vm.value.start).toLocaleString("ru", _vm.dateOptions)
+              _vm
+                .make_date(_vm.value.start)
+                .toLocaleString("ru", _vm.dateOptions)
             )
         )
       ]),
@@ -49926,7 +49939,7 @@ var render = function() {
         _vm._v(
           "Окончание: " +
             _vm._s(
-              new Date(_vm.value.end).toLocaleString("ru", _vm.dateOptions)
+              _vm.make_date(_vm.value.end).toLocaleString("ru", _vm.dateOptions)
             )
         )
       ]),
@@ -50046,7 +50059,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -50163,18 +50176,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         end: {
             get: function get() {
-                return new Date(this.value.end);
+                return this.make_date(this.value.end);
             },
             set: function set(value) {
-                this.value.end = value.toISOString().slice(0, 19).replace('T', ' ');
+                this.value.end = this.unmake_date(value);
             }
         },
         start: {
             get: function get() {
-                return new Date(this.value.start);
+                return this.make_date(this.value.start);
             },
             set: function set(value) {
-                this.value.start = value.toISOString().slice(0, 19).replace('T', ' ');
+                this.value.start = this.unmake_date(value);
             }
         }
 
@@ -50200,6 +50213,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
+        make_date: function make_date(value) {
+            var year = value.substr(0, 4);
+            var month = parseInt(value.substr(5, 2)) - 1;
+            var day = value.substr(8, 2);
+            var hour = value.substr(11, 2);
+            var minute = value.substr(14, 2);
+            return new Date(year, month, day, hour, minute);
+        },
+        unmake_date: function unmake_date(value) {
+            var year = value.getFullYear();
+            var month = (parseInt(value.getMonth()) + 1).toString();
+            month = month.length == 1 ? '0' + month : month;
+            var day = parseInt(value.getDate()).toString();
+            day = day.length == 1 ? '0' + day : day;
+            var hour = parseInt(value.getHours()).toString();
+            hour = hour.length == 1 ? '0' + hour : hour;
+            var minute = parseInt(value.getMinutes()).toString();
+            minute = minute.length == 1 ? '0' + minute : minute;
+            return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+        },
         clearErrors: function clearErrors() {
             this.errors = [];
             this.success = false;
@@ -73319,7 +73352,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return this.value.getHours();
             },
             set: function set(value) {
-                this.value.setHours(value);
+                this.value.setHours(parseInt(value));
                 this.$emit('input', this.value);
             }
         },
@@ -73328,7 +73361,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return this.value.getMinutes();
             },
             set: function set(value) {
-                this.value.setMinutes(value);
+                this.value.setMinutes(parseInt(value));
                 this.$emit('input', this.value);
             }
         },
@@ -73337,7 +73370,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return this.value.getDate();
             },
             set: function set(value) {
-                this.value.setDate(value);
+                this.value.setDate(parseInt(value));
                 this.$emit('input', this.value);
             }
         },
@@ -73346,7 +73379,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return this.value.getMonth();
             },
             set: function set(value) {
-                this.value.setMonth(value);
+                this.value.setMonth(parseInt(value));
                 this.$emit('input', this.value);
             }
         },
@@ -73356,7 +73389,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             set: function set(value) {
                 if (value > 1900) {
-                    this.value.setFullYear(value);
+                    this.value.setFullYear(parseInt(value));
                     this.$emit('input', this.value);
                 }
             }
@@ -73364,7 +73397,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         days: {
             get: function get() {
                 var days = this.days_[this.month];
-                if (this.year % 4 == 0) days++;
+                if (parseInt(this.year) % 4 == 0) days++;
                 return days;
             }
         }
@@ -73391,6 +73424,7 @@ var render = function() {
             expression: "day"
           }
         ],
+        attrs: { nsme: "day_select" },
         on: {
           change: function($event) {
             var $$selectedVal = Array.prototype.filter
@@ -73406,7 +73440,9 @@ var render = function() {
         }
       },
       _vm._l(_vm.days, function(month_day) {
-        return _c("option", [_vm._v(_vm._s(month_day))])
+        return _c("option", { domProps: { value: month_day } }, [
+          _vm._v(_vm._s(month_day))
+        ])
       })
     ),
     _vm._v(" "),
@@ -73437,8 +73473,8 @@ var render = function() {
           }
         }
       },
-      _vm._l(_vm.monthes, function(month_, index) {
-        return _c("option", { domProps: { value: index } }, [
+      _vm._l(_vm.monthes, function(month_, index1) {
+        return _c("option", { domProps: { value: index1 } }, [
           _vm._v(_vm._s(month_))
         ])
       })
@@ -73489,9 +73525,9 @@ var render = function() {
           }
         }
       },
-      _vm._l(23, function(hour_) {
-        return _c("option", { domProps: { value: hour_ } }, [
-          _vm._v(_vm._s(hour_))
+      _vm._l(24, function(hour_, index2) {
+        return _c("option", { domProps: { value: index2 } }, [
+          _vm._v(_vm._s(index2))
         ])
       })
     ),
@@ -73525,8 +73561,10 @@ var render = function() {
           }
         }
       },
-      _vm._l(59, function(minute_) {
-        return _c("option", [_vm._v(_vm._s(minute_))])
+      _vm._l(60, function(minute_, index3) {
+        return _c("option", { domProps: { value: index3 } }, [
+          _vm._v(_vm._s(index3))
+        ])
       })
     )
   ])
