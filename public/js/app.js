@@ -49571,7 +49571,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -49669,8 +49669,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         window.addEventListener('keyup', this.editToggle);
     },
     methods: {
+        make_date: function make_date(value) {
+            var year = value.substr(0, 4);
+            var month = parseInt(value.substr(5, 2)) - 1;
+            var day = value.substr(8, 2);
+            var hour = value.substr(11, 2);
+            var minute = value.substr(14, 2);
+            return new Date(year, month, day, hour, minute);
+        },
         expand: function expand(index) {
+            var _this = this;
+
             if (index != this.index) {
+                var now = new Date();
+                var updated_at = this.make_date(this.kino_events[index].updated_at);
+                updated_at.setHours(updated_at.getHours() + 3);
+                var timeDiff = Math.abs(now.getTime() - updated_at.getTime());
+                var diffMinutes = Math.ceil(timeDiff / (1000 * 60));
+                if (this.kino_events[index].web && now < this.make_date(this.kino_events[index].end) && diffMinutes > 10) {
+                    axios.get('kino-event/' + this.kino_events[index].id, { params: { check_seats: 1 } }).then(function (response) {
+                        _this.kino_events[index].seat_count = response.data.seat_count;
+                        _this.kino_events[index].seat_free = response.data.seat_free;
+                        _this.kino_events[index].updated_at = response.data.updated_at;
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
                 this.kino_events[this.index].expanded = false;
                 this.index = index;
                 this.kino_events[this.index].expanded = true;
@@ -49698,16 +49722,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.index = 0;
         },
         loadMore: function loadMore() {
-            var _this = this;
+            var _this2 = this;
 
             this.busy = true;
             var date = this.kino_events.length == 0 ? new Date('2100-01-01').toISOString().slice(0, 19).replace('T', ' ') : this.kino_events[this.kino_events.length - 1].start;
             setTimeout(function () {
                 axios.get('kino-event', { params: { last: date } }).then(function (response) {
                     if (response.data.length > 0) {
-                        _this.kino_events = _this.kino_events.concat(response.data);
-                        _this.kino_events[_this.index].expanded = true;
-                        _this.busy = false;
+                        _this2.kino_events = _this2.kino_events.concat(response.data);
+                        _this2.kino_events[_this2.index].expanded = true;
+                        _this2.busy = false;
                     }
                 }).catch(function (error) {
                     console.log(error);
@@ -49715,7 +49739,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, 1000);
         },
         rescan: function rescan() {
-            var _this2 = this;
+            var _this3 = this;
 
             if (this.kino_events[this.index].id == 0) {
                 this.kino_events.splice(this.index, 1, {
@@ -49733,7 +49757,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     expanded: false
                 });
             } else axios.get('kino-event/' + this.kino_events[this.index].id).then(function (response) {
-                _this2.kino_events.splice(_this2.index, 1, response.data);
+                _this3.kino_events.splice(_this3.index, 1, response.data);
             }).catch(function (error) {
                 console.log(error);
             });

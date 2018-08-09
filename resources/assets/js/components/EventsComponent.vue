@@ -45,8 +45,32 @@
             window.addEventListener('keyup', this.editToggle)
         },
         methods:{
+            make_date(value){
+                let year = value.substr(0,4)
+                let month = parseInt(value.substr(5,2)) - 1
+                let day = value.substr(8,2)
+                let hour = value.substr(11,2)
+                let minute = value.substr(14,2)
+                return new Date(year,month,day,hour,minute)
+            },
             expand(index) {
                 if (index != this.index) {
+                    let now = new Date();
+                    let updated_at = this.make_date(this.kino_events[index].updated_at);
+                    updated_at.setHours(updated_at.getHours() + 3)
+                    var timeDiff = Math.abs(now.getTime() - updated_at.getTime());
+                    var diffMinutes = Math.ceil(timeDiff / (1000 * 60 ));
+                    if (this.kino_events[index].web && now<this.make_date(this.kino_events[index].end) && diffMinutes>10) {
+                        axios.get('kino-event/' + this.kino_events[index].id, {params:{check_seats:1}} )
+                            .then(response => {
+                                this.kino_events[index].seat_count = response.data.seat_count
+                                this.kino_events[index].seat_free = response.data.seat_free
+                                this.kino_events[index].updated_at = response.data.updated_at
+                            })
+                            .catch(error => {
+                                console.log(error)
+                            })
+                    }
                     this.kino_events[this.index].expanded = false;
                     this.index = index;
                     this.kino_events[this.index].expanded = true;

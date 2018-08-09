@@ -6,6 +6,7 @@ use App\Article;
 use App\KinoEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class KinoEventController extends Controller
 {
@@ -14,6 +15,40 @@ class KinoEventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function check_seats($id) {
+        $kinoEvent = KinoEvent::find($id);
+        $seans = substr($kinoEvent->web,strripos($kinoEvent->web,'/'));
+        $ch = curl_init("https://kinokassa.kinoplan24.ru/api/v2/seance" . $seans);
+        $header = array();
+        $header[] = "Referer: " . $kinoEvent->web;
+        $header[] =	"Origin: https://kinowidget.kinoplan.ru";
+        $header[] = "Content-type: application/json";
+        $header[] = "X-Application-Token: 51859cc5bb6556ae4cdc19e92b5ff834";
+        $header[] = "X-Platform: widget";
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch,CURLOPT_TIMEOUT,30);
+        curl_setopt($ch,CURLOPT_FOLLOWLOCATION,1);
+        curl_setopt($ch,CURLOPT_MAXREDIRS,99);
+        $s=curl_exec($ch);
+        $err = curl_error($ch);
+        curl_close($ch);
+        if (strlen($err)>0) {
+            return false;
+        }
+        $seats = json_decode($s)->seats;
+        $kinoEvent->seat_count = count($seats);
+        $kinoEvent->seat_free = count($seats);;
+        foreach ($seats as $seat)
+            if (!$seat->is_available) $kinoEvent->seat_free--;
+        $kinoEvent->updated_at = Carbon::now();
+        $kinoEvent->save();
+        return true;
+    }
+
     public function index(Request $request)
     {
         //
@@ -63,9 +98,12 @@ class KinoEventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
         //
+        if ($request->check_seats) {
+            $this->check_seats($id);
+        }
         return KinoEvent::with(['article','lector','place'])->find($id);
     }
 
