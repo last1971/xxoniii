@@ -70,6 +70,10 @@
             <label for="web" class="col-md-2 col-form-label text-md-right">Сайт</label>
             <input name="web" type="text" class="col-md-8 form-control" v-model="value.web" />
         </div>
+        <picture-upload-component v-model="value.mob_small" width="150px" height="300px"></picture-upload-component>
+        <picture-upload-component v-model="value.mob_big" width="300px" height="700px"></picture-upload-component>
+        <picture-upload-component v-model="value.dtp_small" width="800px" height="400px"></picture-upload-component>
+        <picture-upload-component v-model="value.dtp_big" width="800px" height="800px"></picture-upload-component>
         <div class="form-group row">
             <div class="col-md-6 btn alert-success" @click="save">Сохранить</div>
             <div class="col-md-6 btn alert-danger" @click="cancel">Отменить</div>
@@ -82,9 +86,10 @@
     import HtmlEditorComponent from "./HtmlEditorComponent";
     import DateTimePicker from "simple-vue2-datetimepicker"
     import DatePickerComponent from "./DatePickerComponent";
+    import PictureUploadComponent from "./PictureUploadComponent";
     export default {
         name: "EventEditComponent",
-        components: {DatePickerComponent, HtmlEditorComponent, DateTimePicker},
+        components: {PictureUploadComponent, DatePickerComponent, HtmlEditorComponent,},
         props: ['value'],
         data(){
             return {

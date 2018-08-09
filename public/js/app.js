@@ -50059,7 +50059,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -50076,6 +50076,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_simple_vue2_datetimepicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_simple_vue2_datetimepicker__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DatePickerComponent__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DatePickerComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__DatePickerComponent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PictureUploadComponent__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PictureUploadComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__PictureUploadComponent__);
 //
 //
 //
@@ -50156,13 +50158,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "EventEditComponent",
-    components: { DatePickerComponent: __WEBPACK_IMPORTED_MODULE_2__DatePickerComponent___default.a, HtmlEditorComponent: __WEBPACK_IMPORTED_MODULE_0__HtmlEditorComponent___default.a, DateTimePicker: __WEBPACK_IMPORTED_MODULE_1_simple_vue2_datetimepicker___default.a },
+    components: { PictureUploadComponent: __WEBPACK_IMPORTED_MODULE_3__PictureUploadComponent___default.a, DatePickerComponent: __WEBPACK_IMPORTED_MODULE_2__DatePickerComponent___default.a, HtmlEditorComponent: __WEBPACK_IMPORTED_MODULE_0__HtmlEditorComponent___default.a },
     props: ['value'],
     data: function data() {
         return {
@@ -73982,6 +73989,50 @@ var render = function() {
           })
         ]),
         _vm._v(" "),
+        _c("picture-upload-component", {
+          attrs: { width: "150px", height: "300px" },
+          model: {
+            value: _vm.value.mob_small,
+            callback: function($$v) {
+              _vm.$set(_vm.value, "mob_small", $$v)
+            },
+            expression: "value.mob_small"
+          }
+        }),
+        _vm._v(" "),
+        _c("picture-upload-component", {
+          attrs: { width: "300px", height: "700px" },
+          model: {
+            value: _vm.value.mob_big,
+            callback: function($$v) {
+              _vm.$set(_vm.value, "mob_big", $$v)
+            },
+            expression: "value.mob_big"
+          }
+        }),
+        _vm._v(" "),
+        _c("picture-upload-component", {
+          attrs: { width: "800px", height: "400px" },
+          model: {
+            value: _vm.value.dtp_small,
+            callback: function($$v) {
+              _vm.$set(_vm.value, "dtp_small", $$v)
+            },
+            expression: "value.dtp_small"
+          }
+        }),
+        _vm._v(" "),
+        _c("picture-upload-component", {
+          attrs: { width: "800px", height: "800px" },
+          model: {
+            value: _vm.value.dtp_big,
+            callback: function($$v) {
+              _vm.$set(_vm.value, "dtp_big", $$v)
+            },
+            expression: "value.dtp_big"
+          }
+        }),
+        _vm._v(" "),
         _c("div", { staticClass: "form-group row" }, [
           _c(
             "div",
@@ -74349,6 +74400,222 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(85)
+}
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(87)
+/* template */
+var __vue_template__ = __webpack_require__(88)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-233b1455"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\PictureUploadComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-233b1455", Component.options)
+  } else {
+    hotAPI.reload("data-v-233b1455", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(86);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("fd1d6f96", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-233b1455\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PictureUploadComponent.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-233b1455\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PictureUploadComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\nimg.autoresize[data-v-233b1455] {\n    max-width:100%;\n    height:auto;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 87 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "PictureUploadComponent",
+    props: ['value', 'width', 'height'],
+    computed: {
+        size: function size() {
+            return {
+                width: this.width,
+                height: this.height,
+                border: this.border
+            };
+        }
+    },
+    data: function data() {
+        return {
+            border: "4px solid black"
+        };
+    },
+
+    methods: {
+        dragover: function dragover() {
+            this.border = "2px dashed gray";
+        },
+        dragleave: function dragleave() {
+            this.border = "4px solid black";
+        },
+        drop: function drop(event) {
+            console.log('ura');
+            this.startUpload(e.originalEvent.dataTransfer.files[0]);
+            this.dragleave();
+        },
+        click: function click() {
+            this.$refs.SelectFile.click();
+        },
+        onFileChanged: function onFileChanged() {
+            if (this.$refs.SelectFile.files.length > 0) {
+                this.startUpload(this.$refs.SelectFile.files[0]);
+            }
+        },
+        startUpload: function startUpload(file) {
+            var _this = this;
+
+            var formData = new FormData();
+            formData.append('image', file);
+            axios({
+                url: 'load-image',
+                method: 'POST',
+                data: formData
+            }).then(function (result) {
+                _this.$emit('input', result.data.url);
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      style: _vm.size,
+      on: {
+        dragover: _vm.dragover,
+        dragleave: _vm.dragleave,
+        drop: function($event) {
+          $event.stopPropagation()
+          $event.preventDefault()
+          _vm.alert(1)
+        },
+        paste: function($event) {
+          $event.stopPropagation()
+          $event.preventDefault()
+          _vm.alert(1)
+        },
+        click: _vm.click
+      }
+    },
+    [
+      _vm.value
+        ? _c("img", { staticClass: "autoresize", attrs: { src: _vm.value } })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("input", {
+        ref: "SelectFile",
+        staticStyle: { display: "none" },
+        attrs: { type: "file" },
+        on: { change: _vm.onFileChanged }
+      })
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-233b1455", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

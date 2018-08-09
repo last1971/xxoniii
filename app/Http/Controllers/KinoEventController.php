@@ -92,6 +92,7 @@ class KinoEventController extends Controller
         //
         $this->validate($request, [
             'article.name' => 'required|string|max:255',
+            'article.short_text' => 'required|string|max:255',
             'id' => 'required|integer',
             'start' => 'required|date',
             'end' => 'required|date',
@@ -113,6 +114,10 @@ class KinoEventController extends Controller
         $kinoEvent->start = $request->start;
         $kinoEvent->end = $request->end;
         $kinoEvent->web = $request->web;
+        $kinoEvent->mob_small = $request->mob_small;
+        $kinoEvent->mob_big = $request->mob_big;
+        $kinoEvent->dtp_small = $request->dtp_small;
+        $kinoEvent->dtp_big = $request->dtp_big;
         $kinoEvent->save();
         return response()->json(['message'=>'ok','id' => $kinoEvent->id,'article_id'=>$kinoEvent->article_id]);
     }
