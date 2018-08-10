@@ -52,9 +52,14 @@ class KinoEventController extends Controller
     public function index(Request $request)
     {
         //
-        $query = KinoEvent::select('kino_events.*', DB::raw('false as expanded'))->with('article','lector','place');
+        $query = KinoEvent::select(
+            'kino_events.*',
+            DB::raw('false as expanded'),
+            DB::raw('kino_events.end<now() as first'),
+            DB::raw('abs(unix_timestamp(kino_events.end)-unix_timestamp(now())) as second')
+        )->with('article','lector','place');
         if ($request->last) $query = $query->where('start','<',$request->last);
-        return $query->orderBy('start','desc')->limit(3)->get();
+        return $query->orderBy('first')->orderBy('second')->limit(3)->get();
     }
 
     /**
