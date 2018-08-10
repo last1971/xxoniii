@@ -77,8 +77,6 @@
                 }
             },
             editToggle(event){
-                if (this.$refs.editor && this.$refs.editor.clearErrors)
-                    this.$refs.editor.clearErrors()
                 if (event.key=='F4')
                     this.editMode = !this.editMode;
             },

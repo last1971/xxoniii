@@ -1,5 +1,5 @@
 <template>
-    <div v-bind:style="size" @dragover="dragover" @dragleave="dragleave" @drop.stop.prevent="alert(1)" @paste.stop.prevent="alert(1)" @click="click">
+    <div v-bind:style="size" @dragover.prevent="dragover" @dragleave="dragleave" @drop.stop.prevent="drop($event)" @paste.stop.prevent="drop($event)" @click="click">
         <img v-if="value" :src="value" class="autoresize"/>
         <input type="file" @change="onFileChanged" style="display:none" ref="SelectFile" />
     </div>
@@ -31,8 +31,7 @@
                 this.border = "4px solid black"
             },
             drop(event) {
-                console.log('ura');
-                this.startUpload(e.originalEvent.dataTransfer.files[0])
+                this.startUpload(event.dataTransfer.files[0])
                 this.dragleave()
             },
             click() {
