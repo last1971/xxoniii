@@ -49725,7 +49725,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             this.busy = true;
-            var date = this.kino_events.length == 0 ? new Date('2100-01-01').toISOString().slice(0, 19).replace('T', ' ') : this.kino_events[this.kino_events.length - 1].start;
+            var date = this.kino_events.length == 0 ? new Date('2100-01-01').toISOString().slice(0, 19).replace('T', ' ') : this.kino_events[this.kino_events.length - 1].end;
             setTimeout(function () {
                 axios.get('kino-event', { params: { last: date } }).then(function (response) {
                     if (response.data.length > 0) {

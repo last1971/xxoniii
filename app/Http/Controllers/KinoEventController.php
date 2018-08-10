@@ -58,7 +58,7 @@ class KinoEventController extends Controller
             DB::raw('kino_events.end<now() as first'),
             DB::raw('abs(unix_timestamp(kino_events.end)-unix_timestamp(now())) as second')
         )->with('article','lector','place');
-        if ($request->last) $query = $query->where('start','<',$request->last);
+        if ($request->last) $query = $query->where('end','<',$request->last);
         return $query->orderBy('first')->orderBy('second')->limit(3)->get();
     }
 
