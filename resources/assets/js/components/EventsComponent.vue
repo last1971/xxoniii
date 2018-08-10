@@ -101,10 +101,8 @@
             },
             loadMore(){
                 this.busy = true;
-                let date = this.kino_events.length == 0 ?
-                    new Date('2100-01-01').toISOString().slice(0, 19).replace('T', ' ') : this.kino_events[this.kino_events.length-1].end
                 setTimeout(() => {
-                    axios.get('kino-event', {params: {last: date}})
+                    axios.get('kino-event', {params: {length: this.kino_events.length}})
                             .then(response => {
                                 if (response.data.length>0) {
                                     this.kino_events = this.kino_events.concat(response.data)
