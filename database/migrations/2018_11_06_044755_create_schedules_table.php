@@ -27,7 +27,6 @@ class CreateSchedulesTable extends Migration
             $table->boolean('closed')->default(false);
             $table->timestamps();
             $table->primary('id');
-            $table->index('start_timestamp');
             $table->foreign('film_id')->references('id')->on('films');
         });
     }

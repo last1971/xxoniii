@@ -16,6 +16,7 @@ class ChageTimeStamp extends Migration
         Schema::table('schedules', function (Blueprint $table) {
             //
             $table->unsignedBigInteger('start_timestamp');
+            $table->index('start_timestamp');
         });
     }
 
