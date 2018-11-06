@@ -7,6 +7,8 @@ use App\Library\KinoApi;
 use App\Schedule;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ScheduleParser extends Command
 {
@@ -74,6 +76,12 @@ class ScheduleParser extends Command
                 }
             }
         }
+        $day = $now = Carbon::now()->subDay()->toDateString();
+        $itogo = Schedule::where('date',$day)
+            ->select(DB::raw('sum(min_price * (seat_count - seat_free)) as itogo'))->first()->itogo;
+        Mail::raw('Итого '  . $itogo . ' руб.', function($message) use ($day) {
+            $message->to(['elcopro@gmail.com','me@xinet.ru'])->subject('Данные кинопарсера за ' . $day);
+        });
         \Log::info('ScheduleParser stop');
     }
 }
