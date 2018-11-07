@@ -54,7 +54,7 @@ class MainParser extends Command
         $schedules = Schedule::where('closed', false)
             ->where('date', $start->toDateString())
             ->whereBetween('start_time', [$start->hour . ':' . $start->minute, $end->hour . ':' . $end->minute])
-            ->get();
+            ->orWhere('parse_state', true)->get();
         foreach ($schedules as $schedule) {
             if ($schedule->parse_state == 0) {
                 $this->parse($schedule);
@@ -74,11 +74,13 @@ class MainParser extends Command
         try {
             $url = 'https://kinokassa.kinoplan24.ru/api/v2/seance/' . $shedule->id;
             $referer = 'https://kinowidget.kinoplan.ru/6440/' . $shedule->film_id . '/' . $shedule->id;
-            $seats = json_decode($this->api->get($url, $referer))->seats;
-            $shedule->seat_count = count($seats);
-            $shedule->seat_free = count($seats);;
-            foreach ($seats as $seat) {
-                if (!$seat->is_available) $shedule->seat_free--;
+            $s = json_decode($this->api->get($url, $referer));
+            if (isset($s->seats)) {
+                $shedule->seat_count = count($s->seats);
+                $shedule->seat_free = count($s->seats);;
+                foreach ($s->seats as $seat) {
+                    if (!$seat->is_available) $shedule->seat_free--;
+                }
             }
             $shedule->parse_state++;
             $shedule->closed = $shedule->parse_state > 1;
