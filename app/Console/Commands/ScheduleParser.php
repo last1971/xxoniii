@@ -77,9 +77,11 @@ class ScheduleParser extends Command
             }
         }
         $day = $now = Carbon::now()->subDay()->toDateString();
-        $itogo = Schedule::where('date',$day)
-            ->select(DB::raw('sum(min_price * (seat_count - seat_free)) as itogo'))->first()->itogo;
-        Mail::raw('Итого '  . $itogo . ' руб.', function($message) use ($day) {
+        $itogo = Schedule::where('date', $day)
+            ->select(DB::raw('sum(seat_count) as seat_counts, sum(seat_count - seat_free) as seat_used,
+            sum(min_price * (seat_count - seat_free)) as itogo'))->first();
+        Mail::raw('Из '  . $itogo->seat_counts . ' мест, было продано ' . $itogo->seat_used .
+            ' на '  . $itogo->itogo . ' руб.', function($message) use ($day) {
             $message->to(['elcopro@gmail.com','me@xinet.ru'])->subject('Данные кинопарсера за ' . $day);
         });
         \Log::info('ScheduleParser stop');
