@@ -18,6 +18,9 @@ Artisan::command('inspire', function () {
 })->describe('Display an inspiring quote');
 
 Artisan::command('test', function () {
-    echo \App\Schedule::where('theater_id', null)->count();
+    \App\Theater::updateOrCreate(['id' => '6440', 'name' => 'Горизонт']);
+    \App\Theater::updateOrCreate(['id' => '6665', 'name' => 'Кинополис Парк']);
+    \App\Theater::updateOrCreate(['id' => '3963', 'name' => 'Кинополис Орбита']);
+    \App\Schedule::where('theater_id', null)->update(['theater_id' => '6440']);
 })->describe('test');
 
