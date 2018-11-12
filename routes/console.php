@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,7 @@ Artisan::command('inspire', function () {
 })->describe('Display an inspiring quote');
 
 Artisan::command('test', function () {
-    \App\Theater::updateOrCreate(['id' => '6440', 'name' => 'Горизонт']);
-    \App\Theater::updateOrCreate(['id' => '6665', 'name' => 'Кинополис Парк']);
-    \App\Theater::updateOrCreate(['id' => '3963', 'name' => 'Кинополис Орбита']);
-    \App\Schedule::where('theater_id', null)->update(['theater_id' => '6440']);
+    $film_time =  Carbon::createFromTimestamp(1542067200);
+    dd($film_time);
 })->describe('test');
 

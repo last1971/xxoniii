@@ -49,11 +49,10 @@ class MainParser extends Command
         /*DB::listen(function($query) {
             var_dump($query->sql, $query->bindings);
         });*/
-        $start = Carbon::now()->addHour(3)->subMinutes(10);
-        $end = Carbon::now()->addHour(3)->addMinutes(30);
+        $start = Carbon::now()->addHour(3)->subMinutes(10)->timestamp;
+        $end = Carbon::now()->addHour(3)->addMinutes(30)->timestamp;
         $schedules = Schedule::where('closed', false)
-            ->where('date', $start->toDateString())
-            ->whereBetween('start_time', [$start->hour . ':' . $start->minute, $end->hour . ':' . $end->minute])
+            ->whereBetween('start_timestamp', [$start, $end])
             ->orWhere('parse_state', true)->get();
         foreach ($schedules as $schedule) {
             if ($schedule->parse_state == 0) {
