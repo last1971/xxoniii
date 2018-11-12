@@ -18,4 +18,9 @@ class Schedule extends Model
     {
         return $this->belongsTo('App\Film');
     }
+
+    public function theater()
+    {
+        return $this->belongsTo('App\Theater');
+    }
 }

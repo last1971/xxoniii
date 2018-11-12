@@ -73,7 +73,7 @@ class MainParser extends Command
     {
         try {
             $url = 'https://kinokassa.kinoplan24.ru/api/v2/seance/' . $shedule->id;
-            $referer = 'https://kinowidget.kinoplan.ru/6440/' . $shedule->film_id . '/' . $shedule->id;
+            $referer = 'https://kinowidget.kinoplan.ru/' . $shedule->theater_id . '/' . $shedule->film_id . '/' . $shedule->id;
             $s = json_decode($this->api->get($url, $referer));
             if (isset($s->seats)) {
                 $shedule->seat_count = count($s->seats);

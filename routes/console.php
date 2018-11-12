@@ -18,7 +18,6 @@ Artisan::command('inspire', function () {
 })->describe('Display an inspiring quote');
 
 Artisan::command('test', function () {
-    echo \Carbon\Carbon::createFromTimestamp(1541505600);
-    echo \Carbon\Carbon::now()->toDateString();
+    echo \App\Schedule::where('theater_id', null)->count();
 })->describe('test');
 
