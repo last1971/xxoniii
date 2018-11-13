@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Inspiring;
 use Carbon\Carbon;
+require('vendor/electrolinux/phpquery/phpQuery/phpQuery.php');
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,9 @@ Artisan::command('inspire', function () {
 })->describe('Display an inspiring quote');
 
 Artisan::command('test', function () {
-    $film_time =  Carbon::createFromTimestamp(1542067200);
-    dd($film_time);
+    $url = 'https://api.bolshoikino.ru/api/getFilms?cityId=19&marketId=192';
+    $api = new \App\Library\KinoApi();
+    $doc = phpQuery::newDocumentHTML($api->bolshoi($url));
+    dd(pq('.film_list_item')[0]->attr('id'));
 })->describe('test');
 
