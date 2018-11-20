@@ -29,7 +29,6 @@ class CreateBolshoiSchedulesTable extends Migration
             $table->unsignedInteger('parse_state')->default(0);
             $table->boolean('closed')->default(false);
             $table->timestamps();
-            $table->primary('id');
             $table->foreign('bolshoi_film_id')->references('id')->on('bolshoi_films');
             $table->index('start_timestamp');
             $table->unique('href');
