@@ -27,7 +27,11 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->command('schedule_parse')->
-            dailyAt('1:20');
+            dailyAt('1:00');
+        $schedule->command('bolshoi_films')->
+            dailyAt('1:10');
+        $schedule->command('bolshoi_schedule')->
+            dailyAt('1:30');
         $schedule->command('main_parse')->withoutOverlapping();
     }
 

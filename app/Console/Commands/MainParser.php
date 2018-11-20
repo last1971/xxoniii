@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\BolshoiSchedule;
 use App\Library\KinoApi;
 use App\Schedule;
 use Carbon\Carbon;
@@ -49,8 +50,47 @@ class MainParser extends Command
         /*DB::listen(function($query) {
             var_dump($query->sql, $query->bindings);
         });*/
-        $start = Carbon::now()->addHour(3)->subMinutes(10)->timestamp;
-        $end = Carbon::now()->addHour(3)->addMinutes(30)->timestamp;
+        $start = Carbon::now()->subMinutes(10)->timestamp;
+        $end = Carbon::now()->addMinutes(30)->timestamp;
+        $schedules = BolshoiSchedule::where('closed', false)
+            ->whereBetween('start_timestamp', [$start, $end])
+            ->orWhere('parse_state', true)->get();
+        foreach ($schedules as $schedule) {
+            $film_time =  Carbon::createFromTimestamp($schedule->start_timestamp);
+            $now = Carbon::now()->addMinutes(3);
+            if ($schedule->parse_state == 0 || ($schedule->parse_state == 1 && $now >= $film_time)) {
+                $html = $this->api->bolshoi('https://api.bolshoikino.ru' . $schedule->href);
+                $start = strpos($html, '{"apiKey"');
+                $end = strpos($html, '"}');
+                $a = json_decode(substr($html, $start, $end - $start + 2));
+                $start = strpos($html, '/api');
+                $end = strpos($html, '=22');
+                $h = substr($html, $start, $end - $start + 3);
+                $html = $this->api->bolshoi('https://api.bolshoikino.ru' . $h);
+                $start = strpos($html, '{"hallid');
+                $h = json_decode(substr($html, $start, strlen($html) - $start - 2));
+                $schedule->seat_count = count($h->seats);
+                foreach ($h->seats as $seat) {
+                    if ($schedule->min_price == 0 || $schedule->min_price > $seat->price)
+                        $schedule->min_price = $seat->price;
+                    if ($schedule->max_price == 0 || $schedule->max_price < $seat->price)
+                        $schedule->max_price = $seat->price;
+                }
+                $fields = array(
+                    'apikey' => $a->apiKey,
+                    'showId' => $a->showId,
+                    'marketId' => 22,
+                    'full' => 0
+                );
+                $b = json_decode($this->api->bolshoi_post('https://api.bolshoikino.ru/getBusySeats', $fields));
+                if (isset($b->data->seats))
+                    $schedule->seat_free = $schedule->seat_count - count($b->data->seats);
+                $schedule->parse_state++;
+                if ($schedule->parse_state == 2)
+                    $schedule->closed = true;
+                $schedule->save();
+            }
+        }
         $schedules = Schedule::where('closed', false)
             ->whereBetween('start_timestamp', [$start, $end])
             ->orWhere('parse_state', true)->get();

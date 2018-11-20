@@ -2,7 +2,6 @@
 
 use Illuminate\Foundation\Inspiring;
 use Carbon\Carbon;
-require('vendor/electrolinux/phpquery/phpQuery/phpQuery.php');
 
 /*
 |--------------------------------------------------------------------------
