@@ -50,8 +50,6 @@ class MainParser extends Command
         /*DB::listen(function($query) {
             var_dump($query->sql, $query->bindings);
         });*/
-        $start = Carbon::now()->subMinutes(10)->timestamp;
-        $end = Carbon::now()->addMinutes(30)->timestamp;
         $schedules = BolshoiSchedule::where('closed', false)
             ->whereBetween('start_timestamp', [$start, $end])
             ->orWhere('parse_state', true)->get();
@@ -91,6 +89,8 @@ class MainParser extends Command
                 $schedule->save();
             }
         }
+        $start = Carbon::now()->subMinutes(10)->timestamp;
+        $end = Carbon::now()->addMinutes(30)->timestamp;
         $schedules = Schedule::where('closed', false)
             ->whereBetween('start_timestamp', [$start, $end])
             ->orWhere('parse_state', true)->get();
