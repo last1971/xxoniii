@@ -91,8 +91,8 @@ class MainParser extends Command
                 $schedule->save();
             }
         }
-        $start = Carbon::now()->subMinutes(10)->timestamp;
-        $end = Carbon::now()->addMinutes(30)->timestamp;
+        $start = Carbon::now()->addHours(3)->subMinutes(10)->timestamp;
+        $end = Carbon::now()->addHours(3)->addMinutes(30)->timestamp;
         $schedules = Schedule::where('closed', false)
             ->whereBetween('start_timestamp', [$start, $end])
             ->orWhere('parse_state', true)->get();
