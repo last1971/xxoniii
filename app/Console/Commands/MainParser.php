@@ -87,6 +87,8 @@ class MainParser extends Command
                 $b = json_decode($this->api->bolshoi_post('https://api.bolshoikino.ru/getBusySeats', $fields));
                 if (isset($b->data->seats))
                     $schedule->seat_free = $schedule->seat_count - count($b->data->seats);
+                if ($schedule->seat_free < 0)
+                    $schedule->seat_free = 0;
                 $schedule->parse_state++;
                 if ($schedule->parse_state == 2)
                     $schedule->closed = true;
