@@ -41,6 +41,7 @@ class BolshoiFilmsParser extends Command
     public function handle()
     {
         //
+        \Log::info('BolshoiFilms start');
         $url = 'https://api.bolshoikino.ru/api/getFilms?cityId=19&marketId=192';
         $api = new \App\Library\KinoApi();
         $doc = \phpQuery::newDocumentHTML($api->bolshoi($url));
@@ -54,6 +55,6 @@ class BolshoiFilmsParser extends Command
             $bf->save();
 
         }
-
+        \Log::info('BolshoiFilms stop');
     }
 }

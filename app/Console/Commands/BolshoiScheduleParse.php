@@ -43,6 +43,7 @@ class BolshoiScheduleParse extends Command
     public function handle()
     {
         //
+        \Log::info('BolshoiSchedule start');
         $films = BolshoiFilm::whereDate('updated_at', Carbon::today())->get();
         $url = 'https://api.bolshoikino.ru/api/getSchedule?cityId=19&marketId=192&filmId=';
         $api = new \App\Library\KinoApi();
@@ -56,7 +57,7 @@ class BolshoiScheduleParse extends Command
                 $times = pq('.step1__seans_info_list[data-date="' . Carbon::now()->format('d.m.Y') . '"] .step1__seans_info .step1__seans_info_list_time a');
                 foreach ($times as $time) {
                     $href = pq($time)->attr('href');
-                    $hm = mb_split(':', preg_replace( '~[^0-9:]~', '', pq($time)->text()));
+                    $hm = mb_split(':', substr(pq($time)->text(), -5));
                     $s = BolshoiSchedule::where('href', $href)->first();
                     if ($s == null) {
                         $s = new BolshoiSchedule();
@@ -81,5 +82,6 @@ class BolshoiScheduleParse extends Command
             ' на ' . $itogo->itogo . ' руб.', function ($message) use ($day) {
             $message->to(['elcopro@gmail.com', 'me@xinet.ru'])->subject('Данные кинопарсера за ' . $day);
         });
+        \Log::info('BolshoiSchedule stop');
     }
 }

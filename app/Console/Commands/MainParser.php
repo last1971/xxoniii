@@ -89,6 +89,7 @@ class MainParser extends Command
                 if ($schedule->parse_state == 2)
                     $schedule->closed = true;
                 $schedule->save();
+                \Log::info('MainParser, parsed ' . $schedule->id);
             }
         }
         $start = Carbon::now()->addHours(3)->subMinutes(10)->timestamp;
