@@ -52,7 +52,7 @@ class MainParser extends Command
         });*/
         $start = Carbon::now()->subMinutes(10)->timestamp;
         $end = Carbon::now()->addMinutes(30)->timestamp;
-        $schedules = BolshoiSchedule::where('closed', false)
+        $schedules = BolshoiSchedule::with('bolshoi_film')->where('closed', false)
             ->whereBetween('start_timestamp', [$start, $end])
             ->orWhere('parse_state', true)->get();
         foreach ($schedules as $schedule) {
@@ -60,6 +60,8 @@ class MainParser extends Command
             $now = Carbon::now()->addMinutes(3);
             if ($schedule->parse_state == 0 || ($schedule->parse_state == 1 && $now >= $film_time)) {
                 $html = $this->api->bolshoi('https://api.bolshoikino.ru' . $schedule->href);
+                $doc = \phpQuery::newDocumentHTML($html);
+                $schedule->hall_title = pq('.header__seance .header__menu_element_title')->text();
                 $start = strpos($html, '{"apiKey"');
                 $end = strpos($html, '"}');
                 $a = json_decode(substr($html, $start, $end - $start + 2));
@@ -89,12 +91,13 @@ class MainParser extends Command
                 if ($schedule->parse_state == 2)
                     $schedule->closed = true;
                 $schedule->save();
-                \Log::info('MainParser, parsed ' . $schedule->id);
+                \Log::info('MainParser, parsed ' . $schedule->id . ' Большой, ' . $schedule->bolshoi_film->title_ru .
+                ' в ' . $schedule->hall_title . ' начaло в ' . $schedule->start_time);
             }
         }
         $start = Carbon::now()->addHours(3)->subMinutes(10)->timestamp;
         $end = Carbon::now()->addHours(3)->addMinutes(30)->timestamp;
-        $schedules = Schedule::where('closed', false)
+        $schedules = Schedule::with('film', 'theater')->where('closed', false)
             ->whereBetween('start_timestamp', [$start, $end])
             ->orWhere('parse_state', true)->get();
         foreach ($schedules as $schedule) {
@@ -127,7 +130,9 @@ class MainParser extends Command
             $shedule->parse_state++;
             $shedule->closed = $shedule->parse_state > 1;
             $shedule->save();
-            \Log::info('MainParser, parsed ' . $shedule->id);
+            \Log::info('MainParser, parsed ' . $shedule->id . ' ' . $shedule->theater->name . ', '
+                . $shedule->film->title_ru . ' в ' . $shedule->hall_title . ' начaло в '
+                . $shedule->start_time);
             return true;
         } catch (\Exception $e) {
             \Log::info('MainParser error - ' . $e->getMessage());
