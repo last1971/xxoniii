@@ -3,9 +3,11 @@
 namespace App\Console\Commands;
 
 use App\BolshoiSchedule;
+use App\KinomaxSchedule;
 use App\Library\KinoApi;
 use App\Schedule;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -38,7 +40,6 @@ class MainParser extends Command
         $this->api = new KinoApi();
         parent::__construct();
     }
-
     /**
      * Execute the console command.
      *
@@ -50,6 +51,7 @@ class MainParser extends Command
         /*DB::listen(function($query) {
             var_dump($query->sql, $query->bindings);
         });*/
+
         $start = Carbon::now()->subMinutes(10)->timestamp;
         $end = Carbon::now()->addMinutes(30)->timestamp;
         $schedules = BolshoiSchedule::with('bolshoi_film')->where('closed', false)

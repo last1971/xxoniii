@@ -17,4 +17,9 @@ class Theater extends Model
     {
         return $this->hasMany('App\Schedule');
     }
+
+    public function kinomax_schedules()
+    {
+        return $this->hasMany('App\KinomaxSchedule');
+    }
 }
