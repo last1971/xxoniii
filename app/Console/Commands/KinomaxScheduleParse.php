@@ -76,7 +76,7 @@ class KinomaxScheduleParse extends Command
                         }
                     }
                 }
-                $day = Carbon::now()->toDateString();
+                $day = Carbon::now()->subDay()->toDateString();
                 $itogo = KinomaxSchedule::where('date', $day)->where('theater_id', $theater->id)
                     ->select(DB::raw('sum(seat_count) as seat_counts, sum(seat_count - seat_free) as seat_used,
                     sum(min_price * (seat_count - seat_free)) as itogo'))->first();
