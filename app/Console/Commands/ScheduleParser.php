@@ -48,7 +48,7 @@ class ScheduleParser extends Command
         \Log::info('ScheduleParser start');
         $api = new KinoApi();
         $now = Carbon::now()->toDateString();
-        $theaters = Theater::get();
+        $theaters = Theater::where('kinoplan', true)->get();
         foreach ($theaters as $theater) {
             $url = 'https://kinokassa.kinoplan24.ru/api/web/v1/' . $theater->id . '/releases/' . $now;
             $referer = 'https://kinowidget.kinoplan.ru/' . $theater->id . '/';

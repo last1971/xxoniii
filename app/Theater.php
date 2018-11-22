@@ -8,7 +8,7 @@ class Theater extends Model
 {
     //
     protected $fillable = [
-        'id', 'name'
+        'id', 'name', 'kinoplan'
     ];
 
     public $incrementing = false;

@@ -19,9 +19,9 @@ Artisan::command('inspire', function () {
 })->describe('Display an inspiring quote');
 
 Artisan::command('test', function () {
-    $url = 'https://api.bolshoikino.ru/api/getFilms?cityId=19&marketId=192';
+    $url = 'https://kinomax.ru/rostov-imax';
     $api = new \App\Library\KinoApi();
     $doc = phpQuery::newDocumentHTML($api->bolshoi($url));
-    dd(pq('.film_list_item')[0]->attr('id'));
+   // dd(pq('.film .w-70 a')->text());
 })->describe('test');
 
