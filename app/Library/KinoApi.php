@@ -12,8 +12,8 @@ namespace App\Library;
 class KinoApi
 {
 
-    public $min_seconds_to_sleep = 10;
-    public $max_seconds_to_sleep = 60;
+    public $min_seconds_to_sleep = 5;
+    public $max_seconds_to_sleep = 30;
 
     public function get_chunck_https($host, $path) {
         sleep(10);

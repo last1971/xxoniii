@@ -19,6 +19,14 @@ class TheaterSeeder extends Seeder
             ['id' => 'https://kinomax.ru/rostov-imax/'],
             ['name' => 'Киномакс-IMAX Ростов-На-Дону', 'kinoplan' => false]
         );
+        \App\Theater::updateOrCreate(
+            ['id' => 'https://kinomax.ru/plaza/'],
+            ['name' => 'Киномакс-Плаза Ростов-На-Дону', 'kinoplan' => false]
+        );
+        \App\Theater::updateOrCreate(
+            ['id' => 'https://kinomax.ru/don/'],
+            ['name' => 'Киномакс-Дон Ростов-На-Дону', 'kinoplan' => false]
+        );
         \App\Schedule::where('theater_id', null)->update(['theater_id' => '6440']);
     }
 }
