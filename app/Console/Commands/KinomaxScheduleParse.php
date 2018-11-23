@@ -76,15 +76,16 @@ class KinomaxScheduleParse extends Command
                         }
                     }
                 }
-                $day = Carbon::now()->subDay()->toDateString();
-                $itogo = KinomaxSchedule::where('date', $day)->where('theater_id', $theater->id)
-                    ->select(DB::raw('sum(seat_count) as seat_counts, sum(seat_count - seat_free) as seat_used,
-                    sum(min_price * (seat_count - seat_free)) as itogo'))->first();
-                Mail::raw('В ' . $theater->name .' из ' . $itogo->seat_counts . ' мест, было продано ' . $itogo->seat_used .
-                    ' на ' . $itogo->itogo . ' руб.', function ($message) use ($day) {
-                    $message->to(['elcopro@gmail.com', 'me@xinet.ru'])->subject('Данные кинопарсера за ' . $day);
-                });
+
             }
         }
+        $day = Carbon::now()->subDay()->toDateString();
+        $itogo = KinomaxSchedule::where('date', $day)->where('theater_id', $theater->id)
+            ->select(DB::raw('sum(seat_count) as seat_counts, sum(seat_count - seat_free) as seat_used,
+                    sum(min_price * (seat_count - seat_free)) as itogo'))->first();
+        Mail::raw('В ' . $theater->name .' из ' . $itogo->seat_counts . ' мест, было продано ' . $itogo->seat_used .
+            ' на ' . $itogo->itogo . ' руб.', function ($message) use ($day) {
+            $message->to(['elcopro@gmail.com', 'me@xinet.ru'])->subject('Данные кинопарсера за ' . $day);
+        });
     }
 }
