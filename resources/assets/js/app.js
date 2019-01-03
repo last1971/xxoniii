@@ -16,7 +16,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('events-component', require('./components/EventsComponent.vue'));
+Vue.component('main-component', require('./components/MainComponent.vue'));
 
 
 const app = new Vue({

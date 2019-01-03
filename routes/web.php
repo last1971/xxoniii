@@ -20,6 +20,7 @@ Route::get('test', function () {
 Route::resource('kino-event','KinoEventController');
 Route::resource('place','PlaceController');
 Route::resource('lector','LectorController');
+Route::apiResource('api/theaters', 'API\TheaterController');
 
 Route::post('load-image','ImageController@upload');//загрузка картинки
 
