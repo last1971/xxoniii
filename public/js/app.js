@@ -47464,7 +47464,7 @@ exports = module.exports = __webpack_require__(46)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47882,6 +47882,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -47895,7 +47900,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             en: __WEBPACK_IMPORTED_MODULE_1_vuejs_datepicker_dist_locale__["a" /* en */],
             ru: __WEBPACK_IMPORTED_MODULE_1_vuejs_datepicker_dist_locale__["b" /* ru */],
             disabledDates: {},
-            theaters: []
+            theaters: [],
+            type_days: 'all'
         };
     },
     mounted: function mounted() {
@@ -47905,6 +47911,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getData();
     },
 
+    watch: {
+        type_days: function type_days() {
+            this.getData();
+        }
+    },
     methods: {
         dateSelect: function dateSelect(date) {
             if (this.to.getTime() < this.from.getTime()) {
@@ -47915,7 +47926,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getData: function getData() {
             var _this = this;
 
-            axios.get('/api/theaters', { params: { from: this.from, to: this.to } }).then(function (response) {
+            axios.get('/api/theaters', { params: { from: this.from, to: this.to, days: this.type_days } }).then(function (response) {
                 _this.theaters = response.data;
             });
         },
@@ -49478,7 +49489,69 @@ var render = function() {
             })
           ],
           1
-        )
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3 input-group mt-2" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.type_days,
+                expression: "type_days"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "radio", value: "all" },
+            domProps: { checked: _vm._q(_vm.type_days, "all") },
+            on: {
+              change: function($event) {
+                _vm.type_days = "all"
+              }
+            }
+          }),
+          _c("label", [_vm._v("Все")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.type_days,
+                expression: "type_days"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "radio", value: "monday" },
+            domProps: { checked: _vm._q(_vm.type_days, "monday") },
+            on: {
+              change: function($event) {
+                _vm.type_days = "monday"
+              }
+            }
+          }),
+          _c("label", [_vm._v("Будни")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.type_days,
+                expression: "type_days"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "radio", value: "holidays" },
+            domProps: { checked: _vm._q(_vm.type_days, "holidays") },
+            on: {
+              change: function($event) {
+                _vm.type_days = "holidays"
+              }
+            }
+          }),
+          _c("label", [_vm._v("Выходные")])
+        ])
       ]),
       _vm._v(" "),
       _vm._m(0),

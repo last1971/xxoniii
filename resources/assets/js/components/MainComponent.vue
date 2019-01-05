@@ -24,6 +24,11 @@
                         :disabled-dates="disabledDates"
                 ></datepicker>
             </div>
+            <div class="col-md-3 input-group mt-2">
+                <input class="form-control" type="radio" v-model="type_days" value="all"/><label>Все</label>
+                <input class="form-control" type="radio" v-model="type_days" value="monday"/><label>Будни</label>
+                <input class="form-control" type="radio" v-model="type_days" value="holidays"/><label>Выходные</label>
+            </div>
         </div>
         <div class="row border mt-2">
             <div class="col-md-1">#</div>
@@ -73,7 +78,8 @@
                 en: en,
                 ru: ru,
                 disabledDates: {},
-                theaters: []
+                theaters: [],
+                type_days: 'all'
             }
         },
         mounted() {
@@ -81,6 +87,11 @@
             this.to = new Date(this.to.setDate(this.to.getDate() - 1))
             this.disabledDates = { to: this.from, from: this.to }
             this.getData()
+        },
+        watch : {
+            type_days() {
+                this.getData()
+            }
         },
         methods: {
             dateSelect(date) {
@@ -90,7 +101,7 @@
                 this.getData()
             },
             getData() {
-                axios.get('/api/theaters', { params : { from: this.from, to: this.to }})
+                axios.get('/api/theaters', { params : { from: this.from, to: this.to, days: this.type_days }})
                     .then(response => {
                         this.theaters = response.data
                     })
