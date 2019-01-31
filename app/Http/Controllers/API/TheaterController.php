@@ -23,26 +23,63 @@ class TheaterController extends Controller
         $to = substr($request->to, 0, 10);
         $days = (new Carbon($to))->diffInDays(new Carbon($from)) + 1;
         $holiday = '';
-        $fromto = [ $from, $to, $from, $to ];
+        $fromto = [ $request->time_from . ':00', $request->time_to . ':00', $from, $to, $request->time_from . ':00', $request->time_to . ':00', $from, $to ];
+        if ($request->days == 'all') {
+            $day = new Carbon($from);
+            $to_ = (new Carbon($to))->addDay();
+            while ($day < $to_) {
+                for ($i = 0; $i < 7; $i++) {
+                    $j = $i == 6 ? 0 : $i + 1;
+                    if ($request->weekdays[$i] == 'false' && $day->isDayOfWeek($j)) {
+                        $days--;
+                    }
+                }
+                $day->addDay();
+            }
+        }
+        for ($i = 0; $i < 7; $i++) {
+            if ($request->weekdays[$i] == 'false') {
+                $holiday .= ' AND WEEKDAY(date) != ' . $i . ' ';
+            }
+        }
         if ($request->days == 'holidays') {
-            $holiday = ' AND date in (select day from holidays where day between ? and ?) ';
-            $fromto = [ $from, $to, $from, $to, $from, $to, $from, $to ];
+            $holiday .= ' AND date in (select day from holidays where day between ? and ?) ';
+            $fromto = [ $request->time_from . ':00', $request->time_to . ':00', $from, $to, $from, $to, $request->time_from . ':00', $request->time_to . ':00', $from, $to, $from, $to ];
             $days = Holiday::whereBetween('day', [$from, $to])->count();
+            $holidays = Holiday::whereBetween('day', [$from, $to])->get();
+            foreach ($holidays as $h) {
+                $d = (new Carbon($h->day))->dayOfWeekIso - 1;
+                if ($request->weekdays[$d] == 'false') {
+                    $days--;
+                }
+            }
         }
         if ($request->days == 'monday') {
             $holiday = ' AND date not in (select day from holidays where day between ? and ?) ';
-            $fromto = [ $from, $to, $from, $to, $from, $to, $from, $to ];
-            $days -= Holiday::whereBetween('day', [$from, $to])->count();
+            $fromto = [ $request->time_from . ':00', $request->time_to . ':00', $from, $to, $from, $to, $request->time_from . ':00', $request->time_to . ':00', $from, $to, $from, $to ];
+            $days = (new Carbon($to))->diffInDays(new Carbon($from)) + 1 - Holiday::whereBetween('day', [$from, $to])->count();
+            $day = new Carbon($from);
+            $to_ = (new Carbon($to))->addDay();
+            $holidays = Holiday::whereBetween('day', [$from, $to])->select('day')->get()->toArray();
+            while ($day < $to_) {
+                for ($i = 0; $i < 7; $i++) {
+                    $j = $i == 6 ? 0 : $i + 1;
+                    if ($request->weekdays[$i] == 'false' && $day->isDayOfWeek($j) && !in_array(['day' => $day->toDateString()], $holidays)) {
+                        $days--;
+                    }
+                }
+                $day->addDay();
+            }
         }
         if ($days == 0) {
             return [];
         }
         $kpls = DB::select('select a.id, a.name, a.hall_title, a.seat_count,
           (select sum(min_price * (seat_count - seat_free)) from schedules 
-          where schedules.theater_id=a.id and schedules.hall_title=a.hall_title and date between ? and ? ' . $holiday . ') 
+          where schedules.theater_id=a.id and start_time >= ? and start_time <= ? and schedules.hall_title=a.hall_title and date between ? and ? ' . $holiday . ') 
           as hall_amount,
           (a.seat_count - (select avg(seat_free) from schedules 
-          where schedules.theater_id=a.id and schedules.hall_title=a.hall_title and date between ? and ? ' . $holiday . ')) 
+          where schedules.theater_id=a.id and start_time >= ? and start_time <= ? and schedules.hall_title=a.hall_title and date between ? and ? ' . $holiday . ')) 
           as hall_fullness
           from (select distinct theaters.id, theaters.name, schedules.hall_title, schedules.seat_count from theaters join schedules on schedules.theater_id = theaters.id where seat_count != 0) a 
         ', $fromto);
@@ -71,10 +108,10 @@ class TheaterController extends Controller
 
         $kpls = DB::select('select a.id, a.name, a.hall_title, a.seat_count,
           (select sum(min_price * (seat_count - seat_free)) from kinomax_schedules 
-          where kinomax_schedules.theater_id=a.id and kinomax_schedules.hall_title=a.hall_title and date between ? and ? ' . $holiday . ') 
+          where kinomax_schedules.theater_id=a.id and start_time >= ? and start_time <= ? and kinomax_schedules.hall_title=a.hall_title and date between ? and ? ' . $holiday . ') 
           as hall_amount,
           (a.seat_count - (select avg(seat_free) from kinomax_schedules 
-          where kinomax_schedules.theater_id=a.id and kinomax_schedules.hall_title=a.hall_title and date between ? and ? ' . $holiday . ')) 
+          where kinomax_schedules.theater_id=a.id and start_time >= ? and start_time <= ? and kinomax_schedules.hall_title=a.hall_title and date between ? and ? ' . $holiday . ')) 
           as hall_fullness
           from (select distinct theaters.id, theaters.name, kinomax_schedules.hall_title, kinomax_schedules.seat_count 
           from theaters join kinomax_schedules on kinomax_schedules.theater_id = theaters.id where seat_count != 0) a 
@@ -103,9 +140,9 @@ class TheaterController extends Controller
 
         $kpls = DB::select('select a.hall_title, a.seat_count,
           (select sum(min_price * (seat_count - seat_free)) 
-          from bolshoi_schedules where bolshoi_schedules.hall_title=a.hall_title and date between ? and ? ' . $holiday . ') as hall_amount,
+          from bolshoi_schedules where bolshoi_schedules.hall_title=a.hall_title and start_time >= ? and start_time <= ? and date between ? and ? ' . $holiday . ') as hall_amount,
           (a.seat_count - (select avg(seat_free)  
-          from bolshoi_schedules where bolshoi_schedules.hall_title=a.hall_title and date between ? and ? ' . $holiday . ')) as hall_fullness
+          from bolshoi_schedules where bolshoi_schedules.hall_title=a.hall_title and start_time >= ? and start_time <= ? and date between ? and ? ' . $holiday . ')) as hall_fullness
           from (select distinct bolshoi_schedules.hall_title, bolshoi_schedules.seat_count from bolshoi_schedules 
           where seat_count != 0 and bolshoi_schedules.hall_title is not null) a ',
             $fromto );
