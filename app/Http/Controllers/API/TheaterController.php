@@ -55,7 +55,7 @@ class TheaterController extends Controller
             }
         }
         if ($request->days == 'monday') {
-            $holiday = ' AND date not in (select day from holidays where day between ? and ?) ';
+            $holiday .= ' AND date not in (select day from holidays where day between ? and ?) ';
             $fromto = [ $request->time_from . ':00', $request->time_to . ':00', $from, $to, $from, $to, $request->time_from . ':00', $request->time_to . ':00', $from, $to, $from, $to ];
             $days = (new Carbon($to))->diffInDays(new Carbon($from)) + 1 - Holiday::whereBetween('day', [$from, $to])->count();
             $day = new Carbon($from);
