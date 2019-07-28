@@ -44,7 +44,7 @@ class KinomaxScheduleParse extends Command
     public function handle()
     {
         //
-        $theaters = Theater::where('kinoplan', false)->get();
+        $theaters = Theater::where('kinoplan', false)->where('is_active', true)->get();
         $api = new \App\Library\KinoApi();
         foreach ($theaters as $theater) {
             $doc = \phpQuery::newDocumentHTML($api->bolshoi($theater->id));
